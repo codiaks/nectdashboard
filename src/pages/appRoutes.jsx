@@ -1,4 +1,5 @@
-import ProtectedLayout from "../components/layouts/ProtectedLayout"; // Adjust path as necessary
+import React from "react";
+import ProtectedLayout from "../layouts/ProtectedLayout"; // Adjust path as necessary
 import Dashboard from "./Dashboard/Dashboard";
 import User from "./User/User";
 
