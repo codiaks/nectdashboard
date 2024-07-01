@@ -1,14 +1,17 @@
-import { Card, Typography } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 
-function TitleValueCard({ title, value }) {
+function TitleValueCard({ title, value, icon }) {
   return (
-    <Card sx={{p : 3, justifyContent : "space-evenly", alignItems : "start", display : "flex", flexDirection : "column", height : "200px"}}>
-      <Typography gutterBottom variant="h5" component="div">
-        {title}
-      </Typography>
-      <Typography variant="h4" component="div">
-        {value}
-      </Typography>
+    <Card sx={{ p: 3, display: "flex", alignItems: "center" }}>
+      <Box sx={{ mr: 2 }}>{icon}</Box>
+      <Box>
+        <Typography variant="h6" component="div">
+          {title}
+        </Typography>
+        <Typography variant="h4" component="div">
+          {value}
+        </Typography>
+      </Box>
     </Card>
   );
 }
