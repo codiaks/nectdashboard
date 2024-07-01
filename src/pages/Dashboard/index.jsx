@@ -14,6 +14,15 @@ import {
   DiningOutlined,
   LanguageOutlined,
 } from "@mui/icons-material";
+import OrderToasts from "./OrderToasts";
+
+const dummyOrders = [
+  "Order of 560 rupees paid",
+  "Order of 340 rupees paid",
+  "Order of 1200 rupees paid",
+  "Order of 450 rupees paid",
+  "Order of 890 rupees paid",
+];
 
 export default function Dashboard() {
   console.log(orderItems);
@@ -67,6 +76,7 @@ export default function Dashboard() {
             p: 3,
             display: "flex",
             justifyContent: "space-between",
+            height : "200px"
             // bgcolor: "#ff9299",
           }}
         >
@@ -117,6 +127,9 @@ export default function Dashboard() {
             </Box>
           </Box>
         </Card>
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <OrderToasts orders={dummyOrders} />
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
         <Paper
