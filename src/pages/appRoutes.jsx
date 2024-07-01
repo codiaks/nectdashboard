@@ -1,14 +1,14 @@
 import ProtectedLayout from "../components/layouts/ProtectedLayout"; // Adjust path as necessary
-import Dashboard from "./Dashboard/Dashboard";
+import Dashboard from "./Dashboard";
 import User from "./User/User";
 
 export const appRoutes = [
   {
-    path: "app",
+    path: "/",
     element: <ProtectedLayout />,
     children: [
       { element: <Dashboard />, path: "", name: "Dashboard" },
-      { element: <User />, path: "user", name: "User" },
+      { element: <User />, path: "users", name: "Users" },
     ],
     name: "App",
   },

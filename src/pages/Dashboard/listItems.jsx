@@ -9,39 +9,34 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { NavLink } from 'react-router-dom';
+
+const listItemsData = [
+  { name: 'Dashboard', route: '/', icon: <DashboardIcon /> },
+  { name: 'Users', route: '/users', icon: <PeopleIcon /> },
+  { name: 'Orders', route: '/orders', icon: <ShoppingCartIcon /> },
+  { name: 'Reports', route: '/reports', icon: <BarChartIcon /> },
+  { name: 'Integrations', route: '/integrations', icon: <LayersIcon /> },
+];
+
+const secondaryListItemsData = [
+  { name: 'Current month', route: '/reports/current-month', icon: <AssignmentIcon /> },
+  { name: 'Last quarter', route: '/reports/last-quarter', icon: <AssignmentIcon /> },
+  { name: 'Year-end sale', route: '/reports/year-end-sale', icon: <AssignmentIcon /> },
+];
+
+const ListItemWithLink = ({ name, route, icon }) => (
+  <ListItemButton component={NavLink} to={route}>
+    <ListItemIcon>{icon}</ListItemIcon>
+    <ListItemText primary={name} />
+  </ListItemButton>
+);
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Orders" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
+    {listItemsData.map((item) => (
+      <ListItemWithLink key={item.name} {...item} />
+    ))}
   </React.Fragment>
 );
 
@@ -50,23 +45,8 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Saved reports
     </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItemButton>
+    {secondaryListItemsData.map((item) => (
+      <ListItemWithLink key={item.name} {...item} />
+    ))}
   </React.Fragment>
 );
