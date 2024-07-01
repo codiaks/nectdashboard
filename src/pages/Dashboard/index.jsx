@@ -91,7 +91,7 @@ export default function Dashboard() {
             </Typography>
             <Box>
               <Typography gutterBottom variant="h6" component="div">
-                Completed: {orderCompletionStatus["Dine In"].Completed}
+                Completed: {orderCompletionStatus["Dine In"].Delivered}
               </Typography>
               <Typography
                 gutterBottom
@@ -99,7 +99,7 @@ export default function Dashboard() {
                 component="div"
                 sx={{ color: "red" }}
               >
-                Not Completed: {orderCompletionStatus["Dine In"].NotCompleted}
+                In Transit : {orderCompletionStatus["Dine In"]["In Transit"]}
               </Typography>
             </Box>
           </Box>
@@ -114,7 +114,7 @@ export default function Dashboard() {
             </Typography>
             <Box>
               <Typography gutterBottom variant="h6" component="div">
-                Completed: {orderCompletionStatus.Online.Completed}
+                Completed: {orderCompletionStatus.Online.Delivered}
               </Typography>
               <Typography
                 gutterBottom
@@ -122,7 +122,7 @@ export default function Dashboard() {
                 component="div"
                 sx={{ color: "red" }}
               >
-                Not Completed: {orderCompletionStatus.Online.NotCompleted}
+                In Transit: {orderCompletionStatus.Online["In Transit"]}
               </Typography>
             </Box>
           </Box>
