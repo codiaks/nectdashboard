@@ -1,20 +1,18 @@
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import TitleValueCard from "../../components/cards/TitleValueCard";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import { analyzeOrders } from "./orderDetails";
-import orderItems from "./orderItems.json";
-import { Box, Card, Typography } from "@mui/material";
 import {
   AttachMoney,
-  Whatshot,
   ShoppingCart,
-  DiningOutlined,
-  LanguageOutlined,
+  Whatshot
 } from "@mui/icons-material";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import dayjs from "dayjs";
+import TitleValueCard from "../../components/cards/TitleValueCard";
+import Chart from "./Chart";
+import CurrentOrders from "./CurrentOrders";
 import OrderToasts from "./OrderToasts";
+import OrdersList from "./OrdersList";
+import { analyzeOrders } from "./orderDetails";
+import orderItems from "./orderItems.json";
 
 const dummyOrders = [
   "Order of 560 rupees paid",
@@ -25,27 +23,30 @@ const dummyOrders = [
 ];
 
 export default function Dashboard() {
-  console.log(orderItems);
   const {
     totalRevenue,
     totalItemsSold,
-    itemsByOrderType,
-    itemsByOrderStatus,
-    mostSoldItemId,
     mostSoldItemName,
     orderCompletionStatus,
   } = analyzeOrders(orderItems);
 
-  console.log("Total Revenue:", totalRevenue);
-  console.log("Total Items Sold:", totalItemsSold);
-  console.log("Items by Order Type:", itemsByOrderType);
-  console.log(
-    "Items by Order Status:",
-    itemsByOrderStatus,
-    mostSoldItemId,
-    mostSoldItemName,
-    orderCompletionStatus
-  );
+  const chartData = Object.values(
+    orderItems
+      .map((item) => ({
+        quantity: item.Items.map((x) => x.Quantity).reduce(
+          (acc, curr) => acc + curr,
+          0
+        ),
+        time: dayjs(item.datetime).format("HH"),
+      }))
+      .reduce((acc, { time, quantity }) => {
+        if (!acc[time]) {
+          acc[time] = { time, quantity: 0 };
+        }
+        acc[time].quantity += quantity;
+        return acc;
+      }, {})
+  ).sort((a, b) => a.time - b.time);
 
   return (
     <Grid container spacing={3}>
@@ -71,67 +72,12 @@ export default function Dashboard() {
         />
       </Grid>
       <Grid item xs={12} md={8}>
-        <Card
-          sx={{
-            p: 3,
-            display: "flex",
-            justifyContent: "space-between",
-            height : "200px"
-            // bgcolor: "#ff9299",
-          }}
-        >
-          <Box sx={{ width: "48%", bgcolor: "#b5eef5", p: 2, borderRadius: 1 }}>
-            <Typography
-              gutterBottom
-              variant="h4"
-              component="div"
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <DiningOutlined sx={{ color: "green", mr: 1 }} /> Dine In
-            </Typography>
-            <Box>
-              <Typography gutterBottom variant="h6" component="div">
-                Completed: {orderCompletionStatus["Dine In"].Delivered}
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                component="div"
-                sx={{ color: "red" }}
-              >
-                In Transit : {orderCompletionStatus["Dine In"]["In Transit"]}
-              </Typography>
-            </Box>
-          </Box>
-          <Box sx={{ width: "48%", bgcolor: "#cae8ff", p: 2, borderRadius: 1 }}>
-            <Typography
-              gutterBottom
-              variant="h4"
-              component="div"
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <LanguageOutlined sx={{ color: "blueviolet", mr: 1 }} /> Online
-            </Typography>
-            <Box>
-              <Typography gutterBottom variant="h6" component="div">
-                Completed: {orderCompletionStatus.Online.Delivered}
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                component="div"
-                sx={{ color: "red" }}
-              >
-                In Transit: {orderCompletionStatus.Online["In Transit"]}
-              </Typography>
-            </Box>
-          </Box>
-        </Card>
+        <CurrentOrders orderCompletionStatus={orderCompletionStatus} />
       </Grid>
       <Grid item xs={12} md={4}>
         <OrderToasts orders={dummyOrders} />
       </Grid>
-      <Grid item xs={12} md={8} lg={9}>
+      <Grid item xs={12} md={12} lg={12}>
         <Paper
           sx={{
             p: 2,
@@ -140,26 +86,13 @@ export default function Dashboard() {
             height: 240,
           }}
         >
-          <Chart />
+          <Chart data={chartData} dataKey={"quantity"} />
         </Paper>
-      </Grid>
-      {/* Recent Deposits */}
-      <Grid item xs={12} md={4} lg={3}>
-        <Paper
-          sx={{
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-            height: 240,
-          }}
-        >
-          <Deposits />
-        </Paper>
-      </Grid>
+      </Grid>      
       {/* Recent Orders */}
       <Grid item xs={12}>
         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          <Orders />
+          <OrdersList showMore data={orderItems.slice(0,9)} />
         </Paper>
       </Grid>
     </Grid>

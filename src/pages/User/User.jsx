@@ -1,7 +1,5 @@
 
 function User() {
-  console.log('object');
-
   return <div>User</div>;
 }
 

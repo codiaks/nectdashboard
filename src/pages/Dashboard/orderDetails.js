@@ -1,4 +1,3 @@
-
 export const analyzeOrders = (data) => {
   let totalRevenue = 0;
   let totalItemsSold = 0;
@@ -14,6 +13,7 @@ export const analyzeOrders = (data) => {
   };
 
   for (const order of data) {
+    
     for (const item of order.Items) {
       const itemPrice = item.Item_Price;
       const quantity = item.Quantity;

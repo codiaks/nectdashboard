@@ -4,25 +4,12 @@ import { LineChart, axisClasses } from '@mui/x-charts';
 
 import Title from './Title';
 
-// Generate Sales Data
-function createData(time, amount) {
-  return { time, amount: amount ?? null };
-}
-
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00'),
-];
-
-export default function Chart() {
+export default function Chart({data, dataKey}) {
   const theme = useTheme();
+
+    // Find the maximum value in the data to set an appropriate y-axis range
+    const maxValue = Math.max(...data.map(item => item[dataKey]));
+    const yAxisMax = Math.ceil(maxValue / 10) * 10; // Round up to the nearest 10
 
   return (
     <React.Fragment>
@@ -52,13 +39,13 @@ export default function Chart() {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2,
-              max: 2500,
+              max: yAxisMax,
               tickNumber: 3,
             },
           ]}
           series={[
             {
-              dataKey: 'amount',
+              dataKey: dataKey,
               showMark: false,
               color: theme.palette.primary.light,
             },
